@@ -2,19 +2,33 @@ package org.example.radio.radioman.service;
 
 public class Radio {
     private int station;
-    private int volume;
+    private int maxStation;
+    private int minVolume = 0;
+    private int maxVolume = 100;
+    private int volume = minVolume;
+
+    public Radio() {
+        maxStation = 9;
+    }
+
+    public Radio(int quantityOfStations) {
+        maxStation = quantityOfStations - 1;
+    }
+
 
     public int getVolume() {
         return volume;
     }
 
+    public int getMaxStation() {
+        return maxStation;
+    }
+
     public void setVolume(int newVolume) {
-        int maxVolume = 10;
-        int minVolume = 0;
-        if (newVolume < 0) {
+        if (newVolume < minVolume) {
             newVolume = minVolume;
         }
-        if (newVolume > 10) {
+        if (newVolume > maxVolume) {
             newVolume = maxVolume;
         }
         volume = newVolume;
@@ -37,31 +51,27 @@ public class Radio {
     }
 
     public int next() {
-        int firstStation = 0;
         int nextStation = station + 1;
-        if (nextStation > 9) {
-            setStation(firstStation);
-        }
-        else {
+        if (nextStation > maxStation) {
+            setStation(0);
+        } else {
             setStation(nextStation);
         }
         return station;
     }
 
     public int prev() {
-        int lastStation = 9;
         int prevStation = station - 1;
-        if (prevStation < 1) {
-            setStation(lastStation);
-        }
-        else {
+        if (prevStation < 0) {
+            setStation(maxStation);
+        } else {
             setStation(prevStation);
         }
         return station;
     }
 
     public void setStation(int newStation) {
-        if (newStation > 9) {
+        if (newStation > maxStation) {
             return;
         }
         if (newStation < 0) {
